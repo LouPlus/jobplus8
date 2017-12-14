@@ -1,7 +1,7 @@
 from flask import abort
 from flask_login import current_user
 from functools import wraps
-from simpledu.models import User
+from jobplus.models import User
 
 
 def role_required(role):
