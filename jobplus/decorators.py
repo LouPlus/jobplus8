@@ -1,7 +1,7 @@
 from flask import abort
 from flask_login import current_user
 from functools import wraps
-from simpledu.models import User
+from jobplus.models import User
 
 
 def role_required(role):
@@ -15,5 +15,5 @@ def role_required(role):
     return decorator
 
 
-staff_required = role_required(User.ROLE_STAFF)
+company_required = role_required(User.ROLE_COMPANY)
 admin_required = role_required(User.ROLE_ADMIN)

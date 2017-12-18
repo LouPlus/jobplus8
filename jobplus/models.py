@@ -14,21 +14,31 @@ class Base(db.Model):
                            default=datetime.utcnow,
                            onupdate=datetime.utcnow)
 
+user_job = db.Table(
+        'user_job',
+        db.Column('user_id',db.Integer,db.ForeignKey('user.id',ondelete='CASCADE')),
+        db.Column('job_id',db.Integer,db.ForeignKey('job.id',ondelete='CASCADE'))
+        )
 
 class User(Base, UserMixin):
     __tablename__ = 'user'
 
     ROLE_USER = 10
-    ROLE_STAFF = 20
+    ROLE_COMPANY = 20
     ROLE_ADMIN = 30
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(32), unique=True, index=True, nullable=False)
+    name = db.Column(db.String(32), unique=True, index=True, nullable=False)
     email = db.Column(db.String(64), unique=True, index=True, nullable=False)
     _password = db.Column('password', db.String(256), nullable=False)
+    real_name = db.Column(db.String(32))
+    phone = db.Column(db.String(32))
+    work_years = db.Column(db.SmallInteger)
     role = db.Column(db.SmallInteger, default=ROLE_USER)
-    job = db.Column(db.String(64))
-    publish_courses = db.relationship('Course')
+    resume = db.relationship('Resume',uselist=False)
+    collect_jobs = db.relationship('Job',secondary=user_job)
+    resume_url = db.Column(db.String(64))
+    detail = db.relationship('CompanyDetail',uselist=False)
 
     def __repr__(self):
         return '<User:{}>'.format(self.username)
@@ -49,49 +59,56 @@ class User(Base, UserMixin):
         return self.role == self.ROLE_ADMIN
 
     @property
-    def is_staff(self):
-        return self.role == self.ROLE_STAFF
+    def is_company(self):
+        return self.role == self.ROLE_COMPANY
 
 
-class Course(Base):
-    __tablename__ = 'course'
+class Resume(Base):
+    __tablename__ = 'resume'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128), unique=True, index=True, nullable=False)
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
+    user = db.relationship('User',uselist=False)
+    job_experiences = db.relationship('JobExperience')
+    edu_experiences = db.relationship('EduExperience')
+    project_experiences = db.relationship('ProjectExperience')
+
+    def profile(self):
+        pass
+
+
+class Experience(Base):
+    __abstract__ = True
+
+    id = db.Column(db.Integer, primary_key=True)
+    begin_at = db.Column(db.DateTime)
+    end_at = db.Column(db.DateTime)
+
     description = db.Column(db.String(256))
-    image_url = db.Column(db.String(256))
-    author_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='SET NULL'))
-    author = db.relationship('User', uselist=False)
-    chapters = db.relationship('Chapter')
 
-    @property
-    def url(self):
-        return url_for('course.index', course_id=self.id)
+class JobExperience(Experience):
+    __tablename__ = 'job_experience'
 
-    def __repr__(self):
-        return '<Course:{}>'.format(self.name)
+    company = db.Column(db.String(32), nullable=False)
+    city = db.Column(db.String(32),nullable=False)
+    resume_id = db.Column(db.Integer, db.ForeignKey('resume.id'))
+    resume = db.relationship('Resume', uselist=False)
 
+class EduExperience(Experience):
+    __tablename__ = 'edu_experience'
 
-class Chapter(Base):
-    __tablename__ = 'chapter'
+    school = db.Column(db.String(32), nullable=False)
+    specialty = db.Column(db.String(32), nullable=False)
+    degree = db.Column(db.String(32))
+    resume_id = db.Column(db.Integer, db.ForeignKey('resume.id'))
+    resume = db.relationship('Resume', uselist=False)
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128), unique=True, index=True)
-    description = db.Column(db.String(256))
-    vedio_url = db.Column(db.String(256))
-    vedio_duration = db.Column(db.String(24))
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id', ondelete="CASCADE"))
-    course = db.relationship('Course', uselist=False)
+class ProjectExperience(Experience):
+    __tablename__ = 'project_experience'
 
-    def __repr__(self):
-        return '<Chapter:{}>'.format(self.name)
+    name = db.Column(db.String(32), nullable=False)
+    role = db.Column(db.String(32))
+    technologys = db.Column(db.String(64))
+    resume_id = db.Column(db.Integer, db.ForeignKey('resume.id'))
+    resume = db.relationship('Resume', uselist=False)
 
-    @property
-    def url(self):
-        return url_for('course.chapter', course_id=self.course.id, chapter_id=self.id)
-
-class Live(Base):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128), unique=True, index=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="SET NULL"))
-    user = db.relationship('User', uselist=False)

@@ -1,13 +1,12 @@
 from flask import Flask
 from flask_migrate import Migrate
-from simpledu.config import configs
-from simpledu.models import db, User
+from jobplus.config import configs
+from jobplus.models import db,User
 from flask_login import LoginManager
-
 
 def register_extensions(app):
     db.init_app(app)
-    Migrate(app, db)
+    Migrate(app,db)
     login_manager = LoginManager()
     login_manager.init_app(app)
 
@@ -20,11 +19,9 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
-    from .handlers import front, course, admin, live
+    from .handlers import front,admin
     app.register_blueprint(front)
-    app.register_blueprint(course)
     app.register_blueprint(admin)
-    app.register_blueprint(live)
 
 
 
