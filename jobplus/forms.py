@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, ValidationError, TextAreaField, IntegerField
 from wtforms.validators import Length, Email, EqualTo, Required, URL, NumberRange
-from simpledu.models import db, User, Course,Live
+from jobplus.models import db, User, ComapnyDetail
 
 
 class LoginForm(FlaskForm):
@@ -22,7 +22,7 @@ class LoginForm(FlaskForm):
 
 
 class RegisterForm(FlaskForm):
-    username = StringField('用户名', validators=[Required(), Length(3, 24)])
+    name = StringField('用户名', validators=[Required(), Length(3, 24)])
     email = StringField('邮箱', validators=[Required(), Email()])
     password = PasswordField('密码', validators=[Required(), Length(6, 24)])
     repeat_password = PasswordField('重复密码', validators=[Required(), EqualTo('password')])
@@ -46,44 +46,64 @@ class RegisterForm(FlaskForm):
         return user
 
 
-class CourseForm(FlaskForm):
-    name = StringField('课程名称', validators=[Required(), Length(5, 32)])
-    description = TextAreaField('课程简介', validators=[Required(), Length(20, 256)])
-    image_url = StringField('封面图片地址', validators=[Required(), URL()])
-    author_id = IntegerField('作者ID', validators=[Required(), NumberRange(min=1, message='无效的用户ID')])
+class UserProfileForm(FlaskForm):
+    real_name = StringField('姓名')
+    email = StringField('邮箱',validators=[Required(),Email()])
+    password = PasswordField('密码(不填写保持不变)')
+    phone = StringField('手机号')
+    work_years = IntegerField('工作年限')
+    resume_url = StringField('简历地址链接')
     submit = SubmitField('提交')
 
-    def validate_author_id(self, field):
-        if not User.query.get(self.author_id.data):
-            raise ValidationError('用户不存在')
+    def validate_phone(self, field):
+        phone = field.data
+        if phone[:2] not in ('13','15','18') and len(phone) != 11:
+            raise ValidationError('无效的手机号，请重新输入')
 
-    def create_course(self):
-        course = Course()
-        self.populate_obj(course)
-        db.session.add(course)
+    def updated_profile(self,user):
+        user.real_name = self.real_name.data
+        user.email = self.email.data
+        
+        if self.password.data:
+            user.password = self.password.data
+        user.phone = self.phone.data
+        user.work_years = self.work_years.data
+        user.resume_url = self.resume_url.data
+        db.session.add(user)
         db.session.commit()
-        return course
 
-    def update_course(self, course):
-        self.populate_obj(course)
-        db.session.add(course)
-        db.session.commit()
-        return course
-
-class LiveForm(FlaskForm):
-    name = StringField('课程名称', validators=[Required(), Length(1,128)])
-    user_id = IntegerField('直播用户ID',validators=[Required(),NumberRange(min=1,message='无效的用户ID')])
+class CompanyProfileFrom(FlaskFrom):
+    name = StringField('企业名称')
+    email = StringField('邮箱',validators=[Required(),Email()])
+    password = PasswordField('密码(不填写保持不变)')
+    slug = StringField('Slug',validators=[Length(3,24)])
+    location = StringField('地址',validators=[Length(0,64)])
+    site = StringField('公司网址',validators=[Length(0,64)])
+    logo = StringField('Logo')
+    description = StringField('一句话描述',validators=[Length(0,128)])
+    about = TextAreaField('公司详情'validators=[Length(0,1024)])
     submit = SubmitField('提交')
 
-    def validate_user_id(self,field):
-        if not User.query.get(self.user_id.data):
-            raise ValidationError('用户不存在')
-    
-    def create_live(self):
-        live = Live()
-        self.populate_obj(live)
-        db.session.add(live)
+    def validate_phone(self, field):
+        phone = field.data
+        if phone[:2] not in ('13','15','18') and len(phone) != 11:
+            raise ValidationError('无效的手机号，请重新输入')
+
+    def updated_profile(self, user):
+        user.name = self.name.data
+        user.email = self.email.data
+        if self.password.data:
+            user.password = self.password.data
+        if user.company_detail:
+            company_detail = user.company_detail
+        else:
+            company_detail = CompanyDetail()
+            company_detail.user_id = user.id
+        self.populate_obj(company_detail)
+        db.session.add(user)
+        db.session.add(company_detail)
         db.session.commit()
+
 
 
 

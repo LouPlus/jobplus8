@@ -112,3 +112,65 @@ class ProjectExperience(Experience):
     resume_id = db.Column(db.Integer, db.ForeignKey('resume.id'))
     resume = db.relationship('Resume', uselist=False)
 
+class CompanyDetail(Base):
+    __tablename__ = 'comapny_detail'
+
+    id = db.Column(db.Integer,primary_key=True)
+    slug = db.Column(db.String(32), nullable=False,index=True,unique=True)
+    logo = db.Column(db.String(64), nullable=False)
+    site = db.Column(db.String(64), nullable=False)
+    location = db.Column(db.String(32), nullable=False)
+    description = db.Column(db.String(128))
+    about = db.Column(db.String(128))
+    stack = db.Column(db.String(128))
+    tags = db.Column(db.String(128))
+    team_introduction = db.Column(db.String(256))
+    welfares = db.Column(db.String(256))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id',ondelete='SET_NULL'))
+    user = db.relationship('User', uselist=False,backref=db.backref('comapny_detail',uselist=False))
+
+    def __repr__(self):
+        return '<CompanyDetail {}>'.format(self.id)
+
+class Job(Base):
+    __tablename__ = 'job'
+    
+    id = db.Column(db.Integer,primary_key=True)
+    
+    name = db.Column(db.String(32))
+    salary_low = db.Column(db.Integer, nullable=False)
+    salary_high = db.Column(db.Integer, nullable=False)
+    location = db.Column(db.String(32))
+    
+    tags = db.Column(db.String(128))
+    experience_requirement = db.Column(db.String(32))
+    degree_requirement = db.Column(db.String(32))
+    is_fulltime = db.Column(db.Boolean,default=True)
+
+    is_open = db.Column(db.Boolean,default=True)
+    company_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete='CASCADE'))
+    company = db.relationship('User', uselist=False)
+    views_count = db.Column(db.Integer,default=0)
+
+    def __repr__(self):
+        return '<Job {}>'.format(self.name)
+
+class Dilivery(Base):
+    __tablename__ = 'delivery'
+
+    STATUS_WAITING = 1
+    STATUS_REGECT = 2
+    STAUS_ACCEPT = 3
+
+    id = db.Column(db.Integer,primary_key=True)
+    job_id = db.Column(db.Integer, db.ForeignKey('job.id',ondelete='SET_NULL'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id',ondelete='SET_NULL'))
+    status = db.Column(db.SmallInteger,default=STATUS_WAITING)
+
+    response = db.Column(db.String(256))
+
+
+    
+
+
+

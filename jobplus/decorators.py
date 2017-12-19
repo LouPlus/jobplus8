@@ -15,5 +15,4 @@ def role_required(role):
     return decorator
 
 
-company_required = role_required(User.ROLE_COMPANY)
 admin_required = role_required(User.ROLE_ADMIN)
