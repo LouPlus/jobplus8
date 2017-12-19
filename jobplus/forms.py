@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, ValidationError, TextAreaField, IntegerField
 from wtforms.validators import Length, Email, EqualTo, Required, URL, NumberRange
-from jobplus.models import db, User, ComapnyDetail
+from jobplus.models import db, User, CompanyDetail
 
 
 class LoginForm(FlaskForm):
@@ -72,7 +72,7 @@ class UserProfileForm(FlaskForm):
         db.session.add(user)
         db.session.commit()
 
-class CompanyProfileFrom(FlaskFrom):
+class CompanyProfileFrom(FlaskForm):
     name = StringField('企业名称')
     email = StringField('邮箱',validators=[Required(),Email()])
     password = PasswordField('密码(不填写保持不变)')
@@ -81,7 +81,7 @@ class CompanyProfileFrom(FlaskFrom):
     site = StringField('公司网址',validators=[Length(0,64)])
     logo = StringField('Logo')
     description = StringField('一句话描述',validators=[Length(0,128)])
-    about = TextAreaField('公司详情'validators=[Length(0,1024)])
+    about = TextAreaField('公司详情',validators=[Length(0,1024)])
     submit = SubmitField('提交')
 
     def validate_phone(self, field):

@@ -1,5 +1,6 @@
 from flask import Blueprint,render_template,redirect,url_for,flash
-from jobplus.models import db,User
+from jobplus.models import db,User,Job
+from jobplus.forms import RegisterForm,LoginForm
 from jobplus.config import configs
 from flask_login import LoginManager,login_user,logout_user,login_required
 from flask_migrate import Migrate
@@ -9,14 +10,15 @@ front = Blueprint('front', __name__)
 
 @front.route('/')
 def index():
-    page = request.args.get('page', default=1, type=int)
-    pagination = Course.query.paginate(
-        page=page,
-        per_page=current_app.config['INDEX_PER_PAGE'],
-        error_out=False
-    )
-    return render_template('index.html', pagination=pagination)
-
+    newest_jobs = Job.query.order_by(Job.created_at.desc()).limit(8)
+    newest_companies = User.query.filter(
+            User.role==User.ROLE_COMPANY
+    ).order_by(User.created_at.desc()).limit(8)
+    return render_template(
+            'index.html',
+            newest_jobs=newest_jobs,
+            newest_companies=newest_companies
+            )
 
 
 @front.route('/login', methods=['GET', 'POST'])

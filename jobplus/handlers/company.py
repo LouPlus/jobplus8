@@ -2,19 +2,19 @@ from flask import Blueprint,render_template,flash,redirect,url_for
 from flask_login import login_required,current_user
 from jobplus.forms import CompanyProfileFrom
 
-company = Blueprint('company',__name__,url_prefix='/company'])
+company = Blueprint('company',__name__,url_prefix='/company')
 
 @company.route('/profile',methods=['GET','POST'])
 @login_required
 def profile():
     if not current_user.is_company:
-        flash('Äú²»ÊÇÆóÒµÓÃ»§','warning')
+        flash('æ‚¨ä¸æ˜¯ä¼ä¸šç”¨æˆ·','warning')
         return redirect(url_for('front.index'))
     form = CompanyProfileForm(obj=current_user.company_detail)
     form.name.data = current_user.name
     form.email.data = current_user.email
     if form.validate_on_submit():
         form.updated_profile(current_user)
-        flash('ÆóÒµĞÅÏ¢¸üĞÂ³É¹¦','success')
+        flash('ä¼ä¸šä¿¡æ¯æ›´æ–°æˆåŠŸ','success')
         return redirect(url_for('front.index'))
     return render_template('company/profile.html',form=form)
