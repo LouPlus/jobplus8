@@ -126,7 +126,7 @@ class CompanyDetail(Base):
     tags = db.Column(db.String(128))
     team_introduction = db.Column(db.String(256))
     welfares = db.Column(db.String(256))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id',ondelete='SET_NULL'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id',ondelete='SET NULL'))
     user = db.relationship('User', uselist=False,backref=db.backref('comapny_detail',uselist=False))
 
     def __repr__(self):
@@ -159,12 +159,12 @@ class Dilivery(Base):
     __tablename__ = 'delivery'
 
     STATUS_WAITING = 1
-    STATUS_REGECT = 2
-    STAUS_ACCEPT = 3
+    STATUS_REJECT = 2
+    STATUS_ACCEPT = 3
 
     id = db.Column(db.Integer,primary_key=True)
-    job_id = db.Column(db.Integer, db.ForeignKey('job.id',ondelete='SET_NULL'))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id',ondelete='SET_NULL'))
+    job_id = db.Column(db.Integer, db.ForeignKey('job.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     status = db.Column(db.SmallInteger,default=STATUS_WAITING)
 
     response = db.Column(db.String(256))
