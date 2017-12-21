@@ -8,6 +8,8 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+
+
 build/
 develop-eggs/
 dist/
@@ -23,6 +25,7 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
 MANIFEST
 
 # PyInstaller
@@ -102,3 +105,5 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+migrations/
