@@ -1,5 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+    <head>
         <meta charset="UTF-8">
         <title>{% block title %}{% endblock %}</title>
+        {% block head %}{% endblock %}
+        <link rel="stylesheet" href="static/main.css">
+    </head>
+    <body>
+        <h1 class="active"><a href="/">职位<span class="sr-only">(current)</span></a></h1>
+        <h1 class="active"><a href="/">公司<span class="sr-only">(current)</span></a></h1>
+        <li><a href="{{ url_for('front.userregister') }}">求职者注册</a></li>
+        <li><a href="{{ url_for('front.companyregister') }}">企业注册</a></li>
+        <li><a href="{{ url_for('front.login') }}">登录</a></li>
+        {% block body %}{% endblock %}
+        {% block footer %}{% endblock %}
+        <script src="static/main.js"></script>
+    </body>
 </html>
