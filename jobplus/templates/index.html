@@ -1,24 +1,13 @@
 {% extends "base.html" %}
 {% from "macros.html" import render_pagination %}
 
-{% block title %}Home{% endblock %}
+{% block title %}首页{% endblock %}
+{% block head %}
+    <div>
+        <h1>JOBPLUS<h1>
+        <p>阿猫招聘网</P>
+    </div>
+{% endblock %}
 
 {% block body %}
-<div class="row">
-  {% for course in pagination.items %}
-  <div class="col-sm-6 col-md-4 course">
-    <div class="thumbnail">
-    <a href="{{ course.url }}" target="_blank">
-        <img src="{{ course.image_url }}" alt="">
-        <div class="caption">
-            <h4 class="course__name">{{ course.name }}</h4>
-            <p class="course__description">{{ course.description }}</p>
-        </div>
-      </a>
-    </div>
-  </div>
-  {% endfor %}
-</div>
-
-{{ render_pagination(pagination, 'front.index') }}
 {% endblock %}
