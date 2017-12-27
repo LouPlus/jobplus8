@@ -1,18 +1,11 @@
 
-
-.pagination>li{
-    display: inline-block;
-}
-.simple-pagination li{
-    float: none;
-}
 body{
     padding-top: 70px;
-    padding-bottom: 50px;
     background: #F9F9F9;
     font-family: "Microsoft YaHei",微软雅黑,"Microsoft JhengHei",华文细黑,STHeiti,MingLiu !important;
 }
 
+/* 头部导航------------开始------------ */
 .home-header{
     background: #fff;
     border-width: 0;
@@ -35,11 +28,11 @@ body{
 .home-header .navbar-toggle .icon-bar{
     background: #ccc;
 }
+/* 头部导航------------结束------------ */
+
+/* 底部页脚------------开始------------ */
 .footer{
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    margin-top: 20px;
 }
 .copyright{
     height: 50px;
@@ -47,8 +40,147 @@ body{
     background: #171919;
     line-height: 50px;
 }
+/* 底部页脚------------结束------------ */
+
+/* 首页海报------------开始------------ */
+.header-poster{
+    margin-top: -20px;
+    background: #6E63CF;
+    height: 450px;
+}
+.header-poster .desc{
+    color: #fff;
+    text-align: center;
+    padding-top: 102px;
+}
+.header-poster .desc h1{
+    font-size: 40px;
+    font-weight: bold;
+}
+.header-poster .desc p{
+    font-size: 18px;
+}
+/* 首页海报------------结束------------ */
+
+/* 职位列表------------开始------------ */
+.job-list-wrap{
+    margin-top: 10px;
+}
+.job-list-title{
+    height: 46px;
+    line-height: 46px;
+    border-bottom: 1px solid #ddd;
+}
+
+.job-list-title .title{
+    font-size: 18px;
+    color: #E41B23;
+    font-weight: bold;
+}
+.job-list-footer{
+    height: 46px;
+    line-height: 46px;
+    border-top: 1px solid #ddd;
+}
+.job-list-footer .more a{
+    color: #009a61;
+}
+
+.job-list-item{
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    margin:10px 0;
+    padding: 10px;
+    background: #fff;
+}
+.job-list-item:hover{
+    box-shadow: 0 0px 8px 2px #ddd;
+}
+.job-list-item a:hover{
+    text-decoration: underline;
+}
+
+
+.job-list-item .job-name{
+    display: block;
+    color: #444;
+    font-weight: bold;
+    line-height: 20px;
+    font-size: 16px;
+}
+.job-list-item .job-location{
+    color: #999;
+}
+.job-list-item .job-attributes{
+    padding: 8px 0;
+    color: #777;
+}
+.job-list-item .job-attributes span{
+    margin-right: 5px;
+}
+.job-list-item .job-attributes .job-salary{
+    color: #009a61;
+    font-weight: bold;
+}
+
+.job-list-item .job-post, .job-list-item .job-post a{
+    color: #999;
+}
+
+
+/* 职位列表------------结束------------ */
+/* 企业列表------------开始------------ */
+
+.company-list-wrap{
+    margin-top: 10px;
+}
+.company-list-title{
+    height: 46px;
+    line-height: 46px;
+    border-bottom: 1px solid #ddd;
+}
+
+.company-list-title .title{
+    font-size: 18px;
+    color: #E41B23;
+    font-weight: bold;
+}
+.company-list-footer{
+    height: 46px;
+    line-height: 46px;
+    border-top: 1px solid #ddd;
+}
+.company-list-footer .more a{
+    color: #009a61;
+}
+
+
+.company-list-item{
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    margin:10px 0;
+    padding: 10px;
+    background: #fff;
+}
+.company-list-item:hover{
+    box-shadow: 0 0px 8px 2px #ddd;
+}
+.company-list-item a:hover{
+    text-decoration: underline;
+}
+
+/* 企业列表------------结束------------ */
+
 .form{
     width: 400px;
     margin-left: auto;
     margin-right: auto;
+}
+
+/* 分页样式 */
+.pagination>li{
+    display: inline-block;
+}
+.simple-pagination li{
+    float: none;
 }
