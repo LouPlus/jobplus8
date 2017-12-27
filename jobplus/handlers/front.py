@@ -15,7 +15,7 @@ def index():
             User.role == User.ROLE_COMPANY
     ).order_by(User.created_at.desc()).limit(8)
     return render_template(
-            'index.html',
+            'front/index.html',
             newest_jobs=newest_jobs,
             newest_companies=newest_companies
             )
@@ -27,7 +27,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         login_user(user, form.remember_me.data)
-    return render_template('login.html', form=form)
+    return render_template('front/login.html', form=form)
 
 
 @front.route('/userregister', methods=['GET', 'POST'])
@@ -37,7 +37,7 @@ def userregister():
         form.create_user()
         flash('注册成功，请登录！', 'success')
         return redirect(url_for('.login'))
-    return render_template('userregister.html', form=form)
+    return render_template('front/userregister.html', form=form)
 
 @front.route('/companyregister', methods=['GET', 'POST'])
 def companyregister():
@@ -45,11 +45,11 @@ def companyregister():
     if form.validate_on_submit():
         company_user = form.create_user()
         company_user.role = User.ROLE_COMPANY
-        db.session.add(company)
+        db.session.add(company_user)
         db.session.commit()
         flash('注册成功，请登录！', 'success')
         return redirect(url_for('.login'))
-    return render_template('companyregister.html',form=form)
+    return render_template('front/companyregister.html',form=form)
 
 
 @front.route('/logout')

@@ -1,0 +1,54 @@
+
+
+.pagination>li{
+    display: inline-block;
+}
+.simple-pagination li{
+    float: none;
+}
+body{
+    padding-top: 70px;
+    padding-bottom: 50px;
+    background: #F9F9F9;
+    font-family: "Microsoft YaHei",微软雅黑,"Microsoft JhengHei",华文细黑,STHeiti,MingLiu !important;
+}
+
+.home-header{
+    background: #fff;
+    border-width: 0;
+    box-shadow: 0 0 4px 0 #ccc;
+}
+.home-header a{
+    color:#000;
+}
+.home-header .nav > li.active > a{
+    color: #08BF91;
+}
+.home-header .nav>li>a:focus,
+.home-header .nav>li>a:hover{
+    background: #fff;
+    color: #08BF91;
+}
+.home-header .navbar-toggle{
+    border: 1px solid #ccc;
+}
+.home-header .navbar-toggle .icon-bar{
+    background: #ccc;
+}
+.footer{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.copyright{
+    height: 50px;
+    color: #666;
+    background: #171919;
+    line-height: 50px;
+}
+.form{
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
