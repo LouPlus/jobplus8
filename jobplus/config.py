@@ -6,6 +6,7 @@ class BaseConfig(object):
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root@localhost:5000/jobplus8'
+    # SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root:password@localhost:3306/jobplus8?charset=utf8'
 
 
 class ProductionConfig(BaseConfig):

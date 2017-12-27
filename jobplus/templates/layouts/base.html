@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <title>{{ title }}</title>
+        <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/css/message.css">
+        <link rel="stylesheet" href="/static/css/simplePagination.min.css">
+        <link rel="stylesheet" href="/static/css/main.css">
+        {% block styles %}{% endblock %}
+    </head>
+    <body>
+
+      {% include 'layouts/header.html' %}
+
+      <div class="container-fluid header">
+        {% block head %}{% endblock %}
+      </div>
+
+      <div class="container">
+        {% block body %}{% endblock %}
+
+
+      </div>
+
+        <div class="footer">
+            <div class="text-center copyright">
+                Copyright © 2017 By Flask
+            </div>
+        </div>
+
+      <script src="/static/js/jquery-2.1.1.min.js"></script>
+      <script src="/static/js/bootstrap.min.js"></script>
+      <script src="/static/js/message.js"></script>
+      <script src="/static/js/jquery.simplePagination.js"></script>
+      <script src="/static/js/main.js"></script>
+      {% block scripts %}{% endblock %}
+    </body>
+</html>

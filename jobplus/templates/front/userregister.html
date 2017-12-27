@@ -1,0 +1,14 @@
+{% extends "layouts/base.html" %}
+{% from "macros.html" import render_form %}
+
+{% set title='求职者注册' %}
+
+{% block body %}
+
+<div class="form">
+    <h2>求职者注册</h2>
+    {{ render_form(form, url_for('front.userregister')) }}
+</div>
+
+{% endblock %}
+
