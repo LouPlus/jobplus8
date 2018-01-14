@@ -14,6 +14,10 @@
 {% endblock %}
 
 {% block body %}
+<div class="jumbotron">
+    <h1>Todo:公司过滤</h4>
+</h4>
+
 <div class="job-list">
     {% for job in pagination.items %}
         {{ render_job(job) }}

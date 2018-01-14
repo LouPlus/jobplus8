@@ -2,6 +2,7 @@
 {% from "macros.html" import render_form %}
 
 {% block admin %}
-<h4>娣诲姞璇剧▼</h4>
-{{ render_form(form, url_for('admin.create_course')) }}
+<h4>创建求职者</h4>
+{{ render_form(form, url_for('admin.create_user')) }}
 {% endblock %}
+
