@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template,current_app,request,flash,redirect,urlfor
+from flask import Blueprint,render_template,current_app,request,flash,redirect
 from jobplus.models import Job,Dilivery,db
 from flask_login import login_required,current_user
 
@@ -15,7 +15,7 @@ def index():
     return render_template('job/index.html',pagination=pagination,active='job')
 
 @job.route('/<int:job_id>/')
-def detail(job_id)
+def detail(job_id):
     job = Job.query.get_or_404(job_id)
     return render_template('job/detail.html',job=job,active='')
 

@@ -19,8 +19,6 @@ class LoginForm(FlaskForm):
         if user and not user.check_password(field.data):
             raise ValidationError('密码错误')
 
-
-
 class RegisterForm(FlaskForm):
     name = StringField('用户名', validators=[Required(), Length(3, 24)])
     email = StringField('邮箱', validators=[Required(), Email()])
@@ -103,6 +101,47 @@ class CompanyProfileFrom(FlaskForm):
         db.session.add(user)
         db.session.add(company_detail)
         db.session.commit()
+
+class UserEditForm(FlaskForm):
+    email = StringField('邮箱',validators=[Required(),Email()])
+    password = PasswordField('密码')
+    real_name = StringField('姓名')
+    phone = StringField('手机号')
+    submit = SubmitField('提交')
+
+    def update(self,user):
+        self.populate_obj(user)
+        if self.password.data:
+            user.password = self.password.data
+        db.session.add(user)
+        db.session.commit()
+
+class CompanyEditForm(FlaskForm):
+    name = StringField('企业名称')
+    email = StringField('邮箱', validators=[Required(), Email()])
+    password = PasswordField('密码')
+    phone = StringField('手机号')
+    site = StringField('公司网站',validators=[Length(0,64)])
+    description = StringField('一句话简介',validators=[Length(0,128)])
+    submit = SubmitField('提交')
+
+    def update(self,company):
+        company.name = self.name.data
+        company.email = self.email.data
+        if self.password.data:
+            company.password = self.password.data
+        if company.detial:
+            detial = company.detial
+        else:
+            detial = CompanyDetial()
+            detialuser_id = company.id
+        detial.site = site.site.data
+        detial.description = description.data
+        db.session.add(company)
+        db.session.add(detial)
+        db.session.commit()
+
+
 
 
 

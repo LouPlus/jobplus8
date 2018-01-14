@@ -32,10 +32,10 @@ def login():
         else:
             login_user(user, form.remember_me.data)
             next = 'user.profile'
-            if user.iscompany:
+            if user.is_admin:
                 next = 'admin.index'
-            elif:
-                next = 'company.profile'
+            elif user.is_company:
+               next = 'company.profile'
             return redirect(url_for(next))
     return render_template('front/login.html', form=form)
 
