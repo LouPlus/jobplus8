@@ -1,7 +1,7 @@
 from flask import url_for
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin
+from flask_login import UserMixin,current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
@@ -35,9 +35,12 @@ class User(Base, UserMixin):
     phone = db.Column(db.String(32))
     work_years = db.Column(db.SmallInteger)
     role = db.Column(db.SmallInteger, default=ROLE_USER)
+    #根据用户在网站上填写的内容生成的简历
     resume = db.relationship('Resume',uselist=False)
     collect_jobs = db.relationship('Job',secondary=user_job)
+    #用户上传的简历或者简历链接
     resume_url = db.Column(db.String(64))
+    #企业用户详情
     detail = db.relationship('CompanyDetail',uselist=False)
 
     def __repr__(self):
@@ -61,6 +64,10 @@ class User(Base, UserMixin):
     @property
     def is_company(self):
         return self.role == self.ROLE_COMPANY
+    
+    @property
+    def is_staff(self):
+        return self.role == self.ROLE_STAFF
 
 
 class Resume(Base):
@@ -98,6 +105,7 @@ class EduExperience(Experience):
     __tablename__ = 'edu_experience'
 
     school = db.Column(db.String(32), nullable=False)
+    #专业
     specialty = db.Column(db.String(32), nullable=False)
     degree = db.Column(db.String(32))
     resume_id = db.Column(db.Integer, db.ForeignKey('resume.id'))
@@ -107,7 +115,9 @@ class ProjectExperience(Experience):
     __tablename__ = 'project_experience'
 
     name = db.Column(db.String(32), nullable=False)
+    #在项目中扮演的角色
     role = db.Column(db.String(32))
+    #多个技术用逗号隔开
     technologys = db.Column(db.String(64))
     resume_id = db.Column(db.Integer, db.ForeignKey('resume.id'))
     resume = db.relationship('Resume', uselist=False)
@@ -120,12 +130,22 @@ class CompanyDetail(Base):
     logo = db.Column(db.String(64), nullable=False)
     site = db.Column(db.String(64), nullable=False)
     location = db.Column(db.String(32), nullable=False)
+    #一句话描述
     description = db.Column(db.String(128))
+    #关于我们，公司详情描述
     about = db.Column(db.String(128))
+    #公司技术栈,多个用逗号隔开,最多10个
     stack = db.Column(db.String(128))
+    #公司标签,多个用逗号隔开,最多10个
     tags = db.Column(db.String(128))
+    #团队介绍
     team_introduction = db.Column(db.String(256))
+    #公司福利
     welfares = db.Column(db.String(256))
+    #公司领域
+    field = db.Column(db.String(256))
+    #融资进度
+    finance_stage = db.Column(db.String(128))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id',ondelete='SET NULL'))
     user = db.relationship('User', uselist=False,backref=db.backref('comapny_detail',uselist=False))
 
@@ -136,17 +156,18 @@ class Job(Base):
     __tablename__ = 'job'
     
     id = db.Column(db.Integer,primary_key=True)
-    
+    #职位名称
     name = db.Column(db.String(32))
     salary_low = db.Column(db.Integer, nullable=False)
     salary_high = db.Column(db.Integer, nullable=False)
     location = db.Column(db.String(32))
-    
+    description = db.Column(db.String(1500))
+    #职位标签,多个标签用逗号隔开,最多10个
     tags = db.Column(db.String(128))
     experience_requirement = db.Column(db.String(32))
     degree_requirement = db.Column(db.String(32))
     is_fulltime = db.Column(db.Boolean,default=True)
-
+    #是否在招聘
     is_open = db.Column(db.Boolean,default=True)
     company_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete='CASCADE'))
     company = db.relationship('User', uselist=False)
@@ -155,18 +176,30 @@ class Job(Base):
     def __repr__(self):
         return '<Job {}>'.format(self.name)
 
+    @property
+    def tag_list(list):
+        return self.tags.split(',')
+
+    @property
+    def current_user_is_applied(self):
+        d = Dilivery.query.filter_by(job_id=self.id,user_id=current_user.id).first()
+        return (d is not None)
+
 class Dilivery(Base):
     __tablename__ = 'delivery'
 
+    #等待企业审核
     STATUS_WAITING = 1
+    #被拒绝
     STATUS_REJECT = 2
+    #被接受,等待面试通知
     STATUS_ACCEPT = 3
 
     id = db.Column(db.Integer,primary_key=True)
     job_id = db.Column(db.Integer, db.ForeignKey('job.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     status = db.Column(db.SmallInteger,default=STATUS_WAITING)
-
+    #企业回应
     response = db.Column(db.String(256))
 
 
