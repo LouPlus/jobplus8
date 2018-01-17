@@ -59,7 +59,7 @@ def edit_user(user_id):
     if user.is_company:
         form.site.data = user.detial.site
         form.description.data = user.detial.description
-    return render_template('admin/edit_user.html',form,user=user)
+    return render_template('admin/edit_user.html',form=form,user=user)
 
 @admin.route('/users/<int:user_id>/disable',methods=['GET','POST'])
 @admin_required

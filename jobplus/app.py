@@ -21,14 +21,13 @@ def register_extensions(app):
     login_manager.login_view = 'front.login'
 
 
-
 def create_app(config):
     app = Flask(__name__)
     app.config.from_object(configs.get(config))
     
     register_extensions(app) 
-    register_errors(app)
     register_blueprints(app)
+    register_errors(app)
      
     return app
 
