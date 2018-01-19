@@ -1,6 +1,7 @@
 {% extends "layouts/base.html" %}
+{% from "macros.html" import render_pagination,render_job %}
 
-{% set title='求职不是梦' %}
+{% set title='JOB页' %}
 
 {% block head %}
     <div class="header-poster">
@@ -13,6 +14,15 @@
 {% endblock %}
 
 {% block body %}
+<div class="jumbotron">
+    <h1>Todo:公司过滤</h4>
+</h4>
+
+<div class="job-list">
+    {% for job in pagination.items %}
+        {{ render_job(job) }}
+    {% endfor %}
+</div>
 
 <div class="job-list-wrap">
     <div class="job-list-title">
@@ -97,6 +107,6 @@
     </div>
 </div>
 
-
+{{ render_pagination(pagination,'job.index') }}
 {% endblock %}
 

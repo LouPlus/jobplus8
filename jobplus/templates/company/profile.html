@@ -1,0 +1,20 @@
+{% extends "layout/base.html" %}
+{% from "macros.html" import render_form %}
+
+{% set title='COMPANY PAGE'%}
+
+{% block head %}
+    <div class="header-poster">
+        <div class=desc">
+            <h1>JOBPLUS</h1>
+            <p>miao JOB</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+<h4>编辑企业信息</h4>
+{{ render_form(form,url_for('company.profile')) }}
+{% endblock %}
+
+

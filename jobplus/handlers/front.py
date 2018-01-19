@@ -26,7 +26,17 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        login_user(user, form.remember_me.data)
+        if user.is_disable:
+            flash('该用户已经被禁用')
+            return redirect(url_for('front.login'))
+        else:
+            login_user(user, form.remember_me.data)
+            next = 'user.profile'
+            if user.is_admin:
+                next = 'admin.index'
+            elif user.is_company:
+               next = 'company.profile'
+            return redirect(url_for(next))
     return render_template('front/login.html', form=form)
 
 
